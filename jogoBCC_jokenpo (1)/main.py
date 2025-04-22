@@ -6,44 +6,54 @@
 #submenus
 import random
 
-etapa=1
+menu=0 #padrão = 0
+subMenu=0 #padrão = 0
+modo = 0  #padrão = 0
+naveg =[menu,subMenu,modo]# menu e submenu e o modo do jogo
 
 
-modo = 0 # indicar o modo do jogo
+## Etapa == 1 Jogo iniciado
+## Etapa == 0 Jogo Finalizado
 
-while etapa > 0:
-    if etapa == 1: #introducao
+naveg[0]=1 #iniciar jogo com a intodução
+
+
+while naveg[0] > 0: # jogo iniciado enquando maior que 0
+    if naveg[0] == 1: #introducao
         print('\n::::::::::::::::\n::::Jokenpo!!:::\n:::::Python:::::\n::::::::::::::::')
-        etapa = 2
-    if etapa == 2: ##menu
-        etapa = int(input('::::::::::::::::\n::>Iniciar [3]\n::>Créditos [4]\n::>Sair [0]\n>> '))
-        #Fim do menu
-    if etapa == 3: ##menu jogar
-        modo = -1
-        if modo == -1:
-            print('::::::::::::::::\nSELECIONE O MODO\n::::::::::::::::\n::::::::::::::::')
-            modo = int(input('::=>CPU vs CPU [1]\n::>Voltar [0]\n>> '))
+        naveg[0] = 2 # ir para o menu principal
+    if naveg[0] == 2: ##menu principal
+        menuSel = int(input('::::::::::::::::\n::>[1] Iniciar\n::>[2] Créditos\n::>[]Sair\n>> '))
+        if 1 <= menuSel <= 2:
+            naveg[0] = menuSel+2
+        else:
+            naveg[0] = 0 #sair
 
-        if modo == 0: etapa = 1
-        if modo == 1: ## CPU X CPU
-            while modo > 0:
+    if naveg[0] == 3: ##menu iniciar -> submenu
+        naveg[1] = 1
+        if naveg[1] == 1:
+            print('::::::::::::::::\nSELECIONE O MODO\n::::::::::::::::\n::::::::::::::::')
+            naveg[2] = int(input('::=>[1] CPU vs CPU \n::>[0] Voltar\n>> '))
+            if naveg[2] == 0: #sair do modo e voltar ao menu anterior [menu principal]
+                naveg = [2,0,0]
+        if naveg[2] == 1: ## CPU X CPU
+            while naveg[2] == 1:
                 sel = ['pedra','papel','tesoura']
                 cpu1 = random.choice(sel)
                 cpu2 = random.choice(sel)
                 print(f'::::::::::{modo}::::::\n::::CPU 1::::CPU 2::::::::::::\n::::{cpu1}::X::{cpu2}::::::::::::')
-                modo = input(f'{cpu1} x {cpu2}::\nContinuar[1] Voltar[2] : ')
-                
+                menuSel = int(input(f'{cpu1} x {cpu2}::\n::> [1] Continuar\n::> [0] Voltar\n::>'))
+                if menuSel == 0 : naveg = [3,1,0] #reconfigura o menu
 
-
-            #print('::::::::::::::::\n::::CPU 2::::::::::::\n::::::::::::::::')
         print('::::::::::::::::\n::::::::::::::::\n::::::::::::::::')
-
-    if etapa == 4:
+    if naveg[0] == 4: ## Créditos
         print('\n\n\n::::::::::::::::::\n:::Desenvolvedor::\n:Joarez C. da Luz:\n::::::::::::::::::')
-        etapa = int(input('::::::::::::::::::\n::>Voltar [2]\n::>Sair [0]\n>> '))
+        menuSel = int(input('::::::::::::::::::\n::>[1] Voltar\n::>[] Sair\n>> '))
         #print('::::::::::::::::\n::::::::::::::::')
         print('\n\n')
-    if etapa >= 5 or etapa < 0:
-        etapa = 1
+        if menuSel == 1:
+            naveg[0] = 2 #menu princial
+        else:
+            naveg[0] = 0 #sair
 print()
 
